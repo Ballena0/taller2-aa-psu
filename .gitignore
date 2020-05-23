@@ -14,3 +14,7 @@
 .history
 
 # End of https://www.gitignore.io/api/visualstudiocode
+
+# Archivos grandes 
+Admisión - PSU.xlsx
+puntajes.csv
