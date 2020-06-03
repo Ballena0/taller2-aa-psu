@@ -21,7 +21,7 @@ void participantes();
  */
 
 vector<int> obtenerPuntajes(std::string linea);
-vector<string> calcularPonderacion(ifstream& admision, int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia);
+vector<string> calcularPonderacion(int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia);
 vector<int> obtenerPonderaciones(std::string linea);
 
 /**
@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
     if(argc > 1){
 
         //abrir archivo de ponderaciones necesarias
-        std::ifstream admision("data/admision.csv");
         
         //control de tiempo de ejecucion, tiempo de inicio
         auto start = std::chrono::system_clock::now();
@@ -59,7 +58,7 @@ int main(int argc, char** argv) {
             string rutaPuntajes = argv[2];
             std::ifstream entrada(rutaPuntajes);
 
-            if(entrada){
+            if(entrada){    
 #pragma omp parallel
             {
 #pragma omp single
@@ -81,17 +80,17 @@ int main(int argc, char** argv) {
 
                                 //calculo de porcentajes para cada carrera
                                 vector<string> fila;
-                                fila = calcularPonderacion(admision, nem, ranking, matematica, lenguaje, ciencias, historia);
+                                fila = calcularPonderacion(nem, ranking, matematica, lenguaje, ciencias, historia);
                                 rutaSalida = rutaSalida + fila[0] + ".txt";
-
-                                std::ofstream salida(rutaSalida);
+                                std::ofstream salida(rutaSalida, fstream::app);
+                                //cout << "inscrito el rut: " << rut << " en la carrera: " << fila.at(0) << endl;
                                 //escribir el resultado
 #pragma omp critical                                
-                                salida << fila.at(1) << std::endl;
+                                salida << rut << ", " << fila.at(1) << std::endl;
                                 salida.close();
                             }
                             puntajes.clear();
-                        }                        
+                        }                       
                     }
                 }
             }
@@ -175,12 +174,14 @@ vector<int> obtenerPonderaciones(std::string linea) {
  * Primer matriculado 2019
  * Ultimo matriculado 2019 
  */
-vector<string> calcularPonderacion(ifstream& admision, int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia){
+vector<string> calcularPonderacion(int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia){
     //retorna como primer valor el {codigo carrera} y segundo valor {rut, ponderacion}
     std::string texto;
     vector<string> salidaMala;
-
-    
+    salidaMala.push_back("NULL");
+    salidaMala.push_back("NULL");
+    std::ifstream admision;
+    admision.open("data/admision.csv", fstream::in); 
 
     if(admision){
         while(std::getline(admision, texto)){
@@ -191,13 +192,13 @@ vector<string> calcularPonderacion(ifstream& admision, int nem, int ranking, int
             if(valores.size() >= 9){
                 float ponderacion;
                 float pnem = (float) valores.at(1)/100;
-                cout << "NEM " << nem << endl;
                 float prank = (float) valores.at(2)/100;
                 float pleng = (float) valores.at(3)/100;
                 float pmat = (float) valores.at(4)/100;
                 float phoc = (float) valores.at(5)/100;
                 float pprimer = valores.at(8);
                 float pultimo = valores.at(9);
+                //cout << valores.at(0) << ", " << valores.at(1) << ", " << valores.at(2) << ", " << valores.at(3) << ", " << valores.at(4) << ", " << valores.at(5) << ", " << valores.at(6) << ", " << valores.at(7) << ", " << valores.at(8) << ", " << valores.at(9) << ", " << endl;
 
                 ponderacion = nem*pnem + ranking* prank + matematicas*pmat + lenguaje * pleng;
                 if(ciencias != 0 && historia == 0){
@@ -212,10 +213,16 @@ vector<string> calcularPonderacion(ifstream& admision, int nem, int ranking, int
                 else if(ciencias != 0 && historia != 0 && historia > ciencias){
                     ponderacion += historia*phoc;
                 }
-                if(ponderacion > pultimo && ponderacion < pprimer){
+                if(ponderacion > pultimo && ponderacion < pprimer && ponderacion > valores.at(6)){
                     salida.push_back(std::to_string(valores.at(0)));
                     salida.push_back(std::to_string(ponderacion));
-                    return salida;
+                    admision.close();
+                    //cout << "inscribio a NEM: " << nem << " en la carrera: " << salida.at(0) << " con la ponderacion: " << salida.at(1) << endl;
+                    return salida;  
+                }
+                else{
+                    //cout << "carrera: " << valores.at(0) << " , " << ponderacion << "para el NEM: " << nem << " fallo al escribir esto" << endl;
+                    //cout << ponderacion << endl;
                 }
             }
             else{
@@ -224,9 +231,11 @@ vector<string> calcularPonderacion(ifstream& admision, int nem, int ranking, int
         }
     }
     else{
-        cout << "falta archivo de admision o formato no correcto" << endl;
+        cout << "falta archivo de admision o formato no correcto || O NO SE ABRIO LA WEA" << endl;
+        admision.close();
         return salidaMala;
     }
+    admision.close();
     return salidaMala;
 }
 
