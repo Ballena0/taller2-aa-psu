@@ -23,6 +23,9 @@ void participantes();
 vector<int> obtenerPuntajes(std::string linea);
 vector<string> calcularPonderacion(int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia);
 vector<int> obtenerPonderaciones(std::string linea);
+vector<string> obtenerCarreras();
+void foo(ifstream& in);
+std::string lineaSoloRut(std::string linea);
 
 /**
  * Taller computacional
@@ -101,21 +104,67 @@ int main(int argc, char** argv) {
 
         }
         else if(opcion == 2){
-            //busqueda de rut
 
+            //Control de tiempo de ejecucion segundo proceso
+            auto start2 = std::chrono::system_clock::now();
+            auto end2 = std::chrono::system_clock::now();
+            std::chrono::duration<float,std::milli> duration2 = end2 - start2;
+
+            //Recepcion de rut
             int rut;
-            string ruta = argv[3];
-            std::ifstream archivos(ruta);
+            rut = std::stoi(argv[2]);
+            //rut = std::atoi(argv[2]);
+            // validacion de rut
             try{
                 rut = std::atoi(argv[2]);
             }catch(std::invalid_argument const &e){
-                cout << "rut invalido " << argv[2] << endl;
+                cout << "Rut invalido " << argv[2] << endl;
             }
 
-            if(archivos){
-                //codigo
+            //Lectura de archivos y validacion. Deberia poder abrir todos los archivos del folder
+            //Temporalmente se utilizan directamente. El push_back luego será con obtenerCarreras[i]
+            vector<string>rutas_archivos;
+            string ruta = argv[3];
+            rutas_archivos.push_back(ruta+"/21015.txt");
+            rutas_archivos.push_back(ruta+"/21074.txt");
+
+            // Se crea vector de ifstream. fstream no es copyable entonces se procede a
+            // crear un vector con las posiciones de memoria de cada archivo
+            vector<ifstream*> archivos_carreras;
+            for(size_t i = 0; i < rutas_archivos.size(); i++){
+                ifstream* in = new ifstream;
+                archivos_carreras.push_back(in);
+                archivos_carreras[i]->open(rutas_archivos.at(i));
+            }
+            foo(*archivos_carreras[1]);
+
+            // Verificar que esten todos los archivos. Por ahora if(1)
+            if(1){
+                int num_linea;
+                int encontrado = 0;
+                // Recorrer cada archivo
+                for (size_t i = 0; i<archivos_carreras.size();i++){
+                    num_linea = 0;
+                    // Se aplican los break para que el programa no siga buscando una vez encontrado
+                    if(encontrado == 1){
+                        break;
+                    }
+                    //Recorrer cada linea de cada archivo
+                    for (std::string linea; getline(*archivos_carreras.at(i), linea);){
+                        num_linea ++;
+                        if(rut == std::stoi(lineaSoloRut(linea))){
+                            cout << "El rut fue encontrado en el archivo "<< rutas_archivos.at(i)<<endl;
+                            cout << "En la linea numero " << num_linea <<endl;
+                            encontrado = 1;
+                            break;
+                        }
+                    }
+                }
+                if(encontrado == 0){
+                    cout << "El rut no existe en la base de datos" << endl;
+                }
             }else{
-                participantes();
+                cout << "Uno o más archivos no existe";
             }
         }
         else{
@@ -123,7 +172,7 @@ int main(int argc, char** argv) {
         }
 
     }else{
-        participantes();
+        cout << "Debe ingresar informacion por consola" << endl;
     }
     return EXIT_SUCCESS;
 }
@@ -159,7 +208,19 @@ vector<int> obtenerPonderaciones(std::string linea) {
     }
 
     return arreglo;
-}   
+}
+
+void foo(ifstream& in){
+
+}
+
+std::string lineaSoloRut(std::string linea){
+    std::string soloRut;
+    int pos = linea.find(",");
+    soloRut = linea.substr(0,pos);
+    return soloRut;
+}
+
 
 /**
  * Estructura archivo admision
@@ -174,6 +235,35 @@ vector<int> obtenerPonderaciones(std::string linea) {
  * Primer matriculado 2019
  * Ultimo matriculado 2019 
  */
+
+// Esta funcion se utilizara para contener el nombre de todos los archivos. [carrera1,carrera2,...]
+vector<string> obtenerCarreras(){
+    std::string texto;
+    vector<string> salidaMala;
+    salidaMala.push_back("NULL");
+    salidaMala.push_back("NULL");
+    std::ifstream admision;
+    admision.open("data/admision.csv", fstream::in); 
+
+    if(admision){
+        vector<string> salida;
+        while(std::getline(admision, texto)){
+            vector<int> valores;
+            valores = obtenerPonderaciones(texto);
+            salida.push_back(std::to_string(valores.at(0)));
+        }
+        return salida;
+    }
+    else{
+        cout << "Falta archivo de admision o formato incorrecto" << endl;
+        admision.close();
+        return salidaMala;
+    }
+
+}
+
+
+
 vector<string> calcularPonderacion(int nem, int ranking, int matematicas, int lenguaje, int ciencias, int historia){
     //retorna como primer valor el {codigo carrera} y segundo valor {rut, ponderacion}
     std::string texto;
