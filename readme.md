@@ -31,17 +31,19 @@ Generar Archivos.
 
 #### Ejemplo:
 
-> ./dist/programa 1 /media/Compartido/puntajes.csv /media/Compartido/Evaluacion02/Grupo
+```bash
+./dist/programa 1 /media/Compartido/puntajes.csv /media/Compartido/Evaluacion02/Grupo
+```
 
 Clasificar los estudiantes en función de su mejor opción de postulación.
 - Este archivo tiene la estructura:
-    - Rut.
-    - NEM.
-    - Ranking.
-    - Matemática.
-    - Lenguaje.
-    - Ciencias.
-    - Historia.
+    - RUT
+    - NEM
+    - Ranking
+    - Matemática
+    - Lenguaje
+    - Ciencias
+    - Historia
 - Datos de salida exitoso.
 
     - Archivo txt cuyo nombre será el código de la carrera.txt (Ejemplo:21041.txt), almacenado en la carpeta definida por la línea de comandos.
@@ -55,7 +57,9 @@ Clasificar los estudiantes en función de su mejor opción de postulación.
 
 #### Buscar Rut
 
-> ./dist/programa 2 14123123 /media/Compartido/Evaluacion02/Grupo
+```bash
+./dist/programa 2 14123123 /media/Compartido/Evaluacion02/Grupo
+```
 
 - Busca el rut ingresado en los archivos existentes en la carpeta especificada.
 - Si el rut es encontrado, debe mostrar en pantalla, el nombre del archivo en el cual se encontró y la línea dónde el registro se encuentra.
