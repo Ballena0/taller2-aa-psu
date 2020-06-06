@@ -105,16 +105,17 @@ int main(int argc, char** argv) {
         }
         else if(opcion == 2){
 
-            //Control de tiempo de ejecucion segundo proceso
+            /**
+            Control de tiempo de ejecucion segundo proceso. NO FUNCIONAL
             auto start2 = std::chrono::system_clock::now();
             auto end2 = std::chrono::system_clock::now();
             std::chrono::duration<float,std::milli> duration2 = end2 - start2;
+            */
 
-            //Recepcion de rut
+            // Recepcion de rut
             int rut;
             rut = std::stoi(argv[2]);
-            //rut = std::atoi(argv[2]);
-            // validacion de rut
+            // Validacion de rut
             try{
                 rut = std::atoi(argv[2]);
             }catch(std::invalid_argument const &e){
