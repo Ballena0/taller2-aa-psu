@@ -113,15 +113,24 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras) 
   cout << "uwu" << endl;
 
   ifstream input(rutaCsv);
-  for (string linea; getline(input, linea);) {
-    Estudiante estudiante = Estudiante(linea);
-    for (int i = 0; i < carreras.size(); i++) {
+#pragma omp parallel
+{
+#pragma omp single
+  {
+    for (string linea; getline(input, linea);) {
+#pragma omp task
+    {
+      Estudiante estudiante = Estudiante(linea);
+      for (int i = 0; i < carreras.size(); i++) {
       Carrera carrera = carreras[i];
       float ponderado = carrera.valorPonderado(estudiante);
+#pragma omp critical
       cout << "Estudiante: " << estudiante.rut << " | Carrera: " << carrera.getCodigo() << " | Ponderado: " << ponderado << endl;
+      }
     }
-    
   }
-
+  }
+}  
+    
   return carreraLlenas;
 } 
