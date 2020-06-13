@@ -16,7 +16,6 @@ Carrera::Carrera(int _codigo, int _nem, int _ranking, int _lenguaje, int _matema
 
 Carrera::Carrera(string lineaCsv) {
     vector<string> arreglo = split(lineaCsv, ',');
-    cout << "arreglo" << arreglo.size() << endl;
     codigo = stoi(arreglo[0]);
     nem = stoi(arreglo[1]);
     ranking = stoi(arreglo[2]);
@@ -41,11 +40,18 @@ float Carrera::valorPonderado(Estudiante e) {
     return (nem * e.nem + ranking * e.ranking + lenguaje * e.lenguaje + matematica * e.matematica + ciencias * e.ciencias) / 100;
 }
 
-bool Carrera::operator > (const Carrera &c) const {
+bool Carrera::agregarEstudiante(Estudiante e) {
+    if (estudiantes.size() < vacantes) {
+        estudiantes.push_back(e);
+    }
+    return false;
+}
+
+bool Carrera::operator >= (const Carrera &c) const {
     if (primero == c.primero) {
         if (vacantes == c.vacantes) {
             if (ultimo == c.ultimo) {
-                return false;
+                return true;
             }
             return ultimo > c.ultimo;
         }
@@ -54,16 +60,15 @@ bool Carrera::operator > (const Carrera &c) const {
     return primero > c.primero;
 }
 
-bool Carrera::operator < (const Carrera &c) const {
+bool Carrera::operator <= (const Carrera &c) const {
     if (primero == c.primero) {
         if (vacantes == c.vacantes) {
             if (ultimo == c.ultimo) {
-                return false;
+                return true;
             }
             return ultimo < c.ultimo;
         }
         return vacantes < c.vacantes;
     }
-    return primero < c.primero;
+    return primero <= c.primero;
 }
-

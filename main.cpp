@@ -12,7 +12,8 @@
 
 using namespace std;
 
-#define numeroEstudiantes 5015751
+//#define iteraciones 5015751
+#define iteraciones 10
 #define rutaAdmisionCsv "data/admision.csv"
 
 /**
@@ -23,6 +24,7 @@ using namespace std;
  */
 
 void participantes();
+void imprimirCarreras(vector<Carrera>);
 bool existeArchivo(string);
 vector<Carrera> generarCarreras(string);
 vector<Carrera> clasificarEstudiantes(string, vector<Carrera>); 
@@ -45,9 +47,11 @@ int main(int argc, char** argv) {
       if (existeArchivo(rutaAdmisionCsv)) {
         string rutaPuntajesCsv = argv[2];
         string rutaSalida = argv[3];
+        
         if (existeArchivo(rutaPuntajesCsv)) {
-          cout << "Entro a ambos" << endl;
           vector<Carrera> carreras = generarCarreras(rutaAdmisionCsv);
+          Carrera::ordenarRecursivo(carreras, 0, carreras.size() - 1);
+
           clasificarEstudiantes(rutaPuntajesCsv, carreras);
         } else {
           cout << "No se pudo encontrar el archivo " << rutaPuntajesCsv << ". Por favor corrija la ruta y vuelta a intentarlo." << endl;
@@ -90,9 +94,16 @@ bool existeArchivo(string ruta) {
 
 void participantes() {
   cout << endl << "=== PRUEBA 2 ===" << endl;
-  cout << endl << "Sebastián Albornoz" << endl;
-  cout << endl << "Sebastián Santelices" << endl;
-  cout << endl << "Jorge Verdugo" << endl;
+  cout << "Sebastián Albornoz" << endl;
+  cout << "Sebastián Santelices" << endl;
+  cout << "Jorge Verdugo" << endl;
+}
+
+void imprimirCarreras(vector<Carrera> carreras) {
+  for (int i = 0; i < carreras.size(); i++) {
+    Carrera carrera = carreras[i];
+    cout << carrera.getCodigo() << endl;
+  }
 }
 
 vector<Carrera> generarCarreras(string rutaCsv) {
@@ -110,17 +121,23 @@ vector<Carrera> generarCarreras(string rutaCsv) {
 vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras) {
   vector<Carrera> carreraLlenas;
 
-  cout << "uwu" << endl;
-
   ifstream input(rutaCsv);
-  for (string linea; getline(input, linea);) {
+  int i = 0;
+  for (string linea; getline(input, linea) && i < iteraciones; i++) {
     Estudiante estudiante = Estudiante(linea);
-    for (int i = 0; i < carreras.size(); i++) {
-      Carrera carrera = carreras[i];
+    vector<pair<int, float>> carrerasPonderaciones;
+    cout << "Para el estudiante " << estudiante.rut << endl;
+    for (int j = 0; j < carreras.size(); j++) {
+      Carrera carrera = carreras[j];
       float ponderado = carrera.valorPonderado(estudiante);
-      cout << "Estudiante: " << estudiante.rut << " | Carrera: " << carrera.getCodigo() << " | Ponderado: " << ponderado << endl;
+      carrerasPonderaciones.push_back(pair<int, float>(carrera.codigo, ponderado));
+      //cout << "Estudiante: " << estudiante.rut << " | Carrera: " << carrera.getCodigo() << " | Ponderado: " << ponderado << endl;
     }
-    
+    ordenarRecursivo(carrerasPonderaciones, 0, carrerasPonderaciones.size());
+    for (int k = 0; k < carrerasPonderaciones.size(); k++) {
+      pair<int, float> carreraPonderacion = carrerasPonderaciones[k];
+      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;
+    }
   }
 
   return carreraLlenas;

@@ -15,6 +15,8 @@ using namespace std;
 
 void participantes();
 bool existeArchivo(string);
+
 vector<string> split(string, char);
 vector<Carrera> generarCarreras(string);
-vector<Carrera> clasificarEstudiantes(string, vector<Carrera>); 
+vector<Carrera> clasificarEstudiantes(string, vector<Carrera>);
+void ordenarRecursivo(vector<pair<int, float>> &, int, int);
