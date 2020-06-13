@@ -16,6 +16,10 @@ Carrera::Carrera(int _codigo, int _nem, int _ranking, int _lenguaje, int _matema
 
 Carrera::Carrera(string lineaCsv) {
     vector<string> arreglo = split(lineaCsv, ',');
+<<<<<<< HEAD
+=======
+    //cout << "arreglo" << arreglo.size() << endl;
+>>>>>>> 7f4fc2f53fbe973d6c05c98ddf88fe910cd70424
     codigo = stoi(arreglo[0]);
     nem = stoi(arreglo[1]);
     ranking = stoi(arreglo[2]);
@@ -70,5 +74,13 @@ bool Carrera::operator <= (const Carrera &c) const {
         }
         return vacantes < c.vacantes;
     }
+<<<<<<< HEAD
     return primero <= c.primero;
+=======
+    return primero < c.primero;
+}
+
+vector<Estudiante> Carrera::getEstudiantes(){
+    return estudiantes;
+>>>>>>> 7f4fc2f53fbe973d6c05c98ddf88fe910cd70424
 }
