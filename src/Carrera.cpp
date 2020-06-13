@@ -16,7 +16,7 @@ Carrera::Carrera(int _codigo, int _nem, int _ranking, int _lenguaje, int _matema
 
 Carrera::Carrera(string lineaCsv) {
     vector<string> arreglo = split(lineaCsv, ',');
-    cout << "arreglo" << arreglo.size() << endl;
+    //cout << "arreglo" << arreglo.size() << endl;
     codigo = stoi(arreglo[0]);
     nem = stoi(arreglo[1]);
     ranking = stoi(arreglo[2]);
@@ -67,3 +67,6 @@ bool Carrera::operator < (const Carrera &c) const {
     return primero < c.primero;
 }
 
+vector<Estudiante> Carrera::getEstudiantes(){
+    return estudiantes;
+}

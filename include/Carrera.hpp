@@ -33,7 +33,7 @@ class Carrera {
 		bool operator > (const Carrera&) const;
 		int getCodigo();
 		float valorPonderado(Estudiante);
-
+		vector<Estudiante> getEstudiantes();
 };
 
 #endif // __CARRERA_H__
