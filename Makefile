@@ -18,11 +18,14 @@ Estudiante.o: directorios src/Estudiante.cpp include/Estudiante.hpp
 Carrera.o: directorios src/Carrera.cpp include/Carrera.hpp
 	$(CXX) $(CXXFLAGS) -c src/Carrera.cpp -o build/Carrera.o
 
+EstudianteCarrera.o: directorios src/EstudianteCarrera.cpp include/EstudianteCarrera.hpp
+	$(CXX) $(CXXFLAGS) -c src/EstudianteCarrera.cpp -o build/EstudianteCarrera.o
+
 main.o: directorios main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp -o build/main.o
 
 all: clean main.o Estudiante.o Carrera.o funciones.o
-	$(CXX) $(CXXFLAGS) -o dist/promediador-omp build/main.o build/Estudiante.o build/Carrera.o build/funciones.o $(LIBS) 
+	$(CXX) $(CXXFLAGS) -o dist/promediador-omp build/main.o build/Estudiante.o build/Carrera.o build/EstudianteCarrera.o build/funciones.o $(LIBS) 
 	rm -fr build
 
 clean:
