@@ -17,7 +17,7 @@ void participantes();
 bool existeArchivo(string);
 
 vector<string> split(string, char);
-vector<Carrera> generarCarreras(string);
+map<int, Carrera> generarCarreras(string);
 vector<Carrera> clasificarEstudiantes(string, vector<Carrera>);
 
 

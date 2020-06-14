@@ -23,7 +23,8 @@ class Carrera {
 		int matematica;
 		int ciencias;
 		int promedioMinimo;
-		int vacantes;
+		int vacantesTotales;
+		int vacantesActuales;
 		float primero;
 		float ultimo;
 		Carrera();
@@ -35,6 +36,8 @@ class Carrera {
 		bool operator < (const Carrera&) const;
 		bool operator > (const Carrera&) const;
 		
+		bool estaLlena();
+		bool estaVacia();
 		bool agregarEstudiante(Estudiante);
 		static void ordenarRecursivo(vector<Carrera> &, int, int);
 		int getCodigo();
