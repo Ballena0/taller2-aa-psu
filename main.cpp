@@ -164,7 +164,7 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
     ordenarRecursivo(carrerasPonderaciones, 0, carrerasPonderaciones.size());
     for (int k = 0; k < carrerasPonderaciones.size(); k++) {
       pair<int, float> carreraPonderacion = carrerasPonderaciones[k];
-      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;
+      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;}
 #pragma omp parallel
   {
 #pragma omp single
@@ -187,15 +187,15 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
   }
 
   return carreraLlenas;
-}
+} }
 
 void escribirCarreras(vector<Carrera> listaCarreras, string rutaSalida) {
     for(long unsigned int i = 0; i < listaCarreras.size(); i++){
-        string nombreCarrera = rutaSalida + std::to_string(listaCarreras[i].getCodigo()) + ".txt";
-        ofstream salida(nombreCarrera, fstream::app);
-        for(long unsigned int j = 0; i < listaCarreras[i].getEstudiantes().size(); j++){
-            salida << listaCarreras[i].getEstudiantes()[j].rut << ", " << "ponderado" << endl; 
-        }
-        salida.close();
+      string nombreCarrera = rutaSalida + std::to_string(listaCarreras[i].getCodigo()) + ".txt";
+      ofstream salida(nombreCarrera, fstream::app);
+      for(long unsigned int j = 0; i < listaCarreras[i].getEstudiantes().size(); j++){
+          salida << listaCarreras[i].getEstudiantes()[j].rut << ", " << "ponderado" << endl; 
+      }
+      salida.close();
     }
 }

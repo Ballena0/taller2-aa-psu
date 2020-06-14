@@ -24,7 +24,7 @@ EstudianteCarrera.o: directorios src/EstudianteCarrera.cpp include/EstudianteCar
 main.o: directorios main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp -o build/main.o
 
-all: clean main.o Estudiante.o Carrera.o funciones.o
+all: clean main.o Estudiante.o Carrera.o funciones.o EstudianteCarrera.o
 	$(CXX) $(CXXFLAGS) -o dist/promediador-omp build/main.o build/Estudiante.o build/Carrera.o build/EstudianteCarrera.o build/funciones.o $(LIBS) 
 	rm -fr build
 
