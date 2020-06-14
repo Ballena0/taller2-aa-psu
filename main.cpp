@@ -61,7 +61,8 @@ int main(int argc, char **argv)
           vector<Carrera> carreras = generarCarreras(rutaAdmisionCsv);
           ordenarRecursivo(carreras, 0, carreras.size() - 1);
 
-          clasificarEstudiantes(rutaPuntajesCsv, carreras);
+          vector<Carrera> carrerasLlenas = clasificarEstudiantes(rutaPuntajesCsv, carreras);
+          escribirCarreras(carrerasLlenas, rutaSalida);
         }
         else
         {
@@ -125,7 +126,7 @@ void participantes() {
 }
 
 void imprimirCarreras(vector<Carrera> carreras) {
-  for (int i = 0; i < carreras.size(); i++) {
+  for (long unsigned int i = 0; i < carreras.size(); i++) {
     Carrera carrera = carreras[i];
     cout << carrera.getCodigo() << endl;
   }
@@ -155,7 +156,7 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
     Estudiante estudiante = Estudiante(linea);
     vector<EstudianteCarrera> estudiatesCarreras;
     cout << "Para el estudiante " << estudiante.rut << endl;
-    for (int j = 0; j < carreras.size(); j++) {
+    for (long unsigned int j = 0; j < carreras.size(); j++) {
       Carrera carrera = carreras[j];
       float ponderado = carrera.valorPonderado(estudiante);
       estudiatesCarreras.push_back(EstudianteCarrera(estudiante, carrera, ponderado));
@@ -163,7 +164,7 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
     }
 
     ordenarRecursivo(estudiatesCarreras, 0, estudiatesCarreras.size());
-    for (int k = 0; k < estudiatesCarreras.size(); k++) {
+    for (long unsigned int k = 0; k < estudiatesCarreras.size(); k++) {
       EstudianteCarrera estudianteCarrera = estudiatesCarreras[k];
       cout << estudianteCarrera.carrera.codigo << ": " << estudianteCarrera.estudiante.rut << endl;
     }
