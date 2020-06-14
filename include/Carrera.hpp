@@ -14,7 +14,6 @@ using namespace std;
 
 class Carrera {
 	private:
-		vector<Estudiante> estudiantes;
 	public:
 		int codigo;
 		int nem;
@@ -23,9 +22,11 @@ class Carrera {
 		int matematica;
 		int ciencias;
 		int promedioMinimo;
-		int vacantes;
+		int vacantesTotales;
+		int vacantesActuales;
 		float primero;
 		float ultimo;
+		vector<Estudiante> estudiantes;
 		Carrera();
 		Carrera(string);
 		Carrera(int, int, int, int, int, int, int, int, float, float);
@@ -35,6 +36,8 @@ class Carrera {
 		bool operator < (const Carrera&) const;
 		bool operator > (const Carrera&) const;
 		
+		bool estaLlena();
+		bool estaVacia();
 		bool agregarEstudiante(Estudiante);
 		static void ordenarRecursivo(vector<Carrera> &, int, int);
 		int getCodigo();

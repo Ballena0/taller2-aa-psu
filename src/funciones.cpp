@@ -15,4 +15,16 @@ vector<string> split(string str, char delimitador) {
     return result;
 }
 
+map<int, Carrera> generarCarreras(string rutaCsv) {
+  map<int, Carrera> carreras;
+
+  ifstream entrada(rutaCsv);
+  for (string linea; getline(entrada, linea);)
+  {
+    Carrera carrera = Carrera(linea);
+    carreras.insert(pair<int, Carrera>(carrera.codigo, carrera));
+  }
+
+  return carreras;
+}
 

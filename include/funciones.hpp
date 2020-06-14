@@ -17,7 +17,7 @@ void participantes();
 bool existeArchivo(string);
 
 vector<string> split(string, char);
-vector<Carrera> generarCarreras(string);
+map<int, Carrera> generarCarreras(string);
 vector<Carrera> clasificarEstudiantes(string, vector<Carrera>);
 
 
@@ -41,7 +41,7 @@ template <class T>
 void ordenarRecursivo(vector<T> &arr, int low, int high) {
 	if (low < high) { 
 		int piv = obtenerIndicePivote(arr, low, high); 
-
+		//#pragma omp parallel
 		ordenarRecursivo(arr, low, piv - 1); 
 		ordenarRecursivo(arr, piv + 1, high); 
 	} 
