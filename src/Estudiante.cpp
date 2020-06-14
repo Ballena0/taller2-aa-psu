@@ -1,6 +1,11 @@
 #include "../include/Estudiante.hpp"
 #include "../include/funciones.hpp"
 
+Estudiante::Estudiante() {
+
+}
+
+
 Estudiante::Estudiante(long _rut, int _nem, int _ranking, int _matematica, int _lenguaje, int _ciencias, int _historia) {
     rut = _rut;
     nem = _nem;

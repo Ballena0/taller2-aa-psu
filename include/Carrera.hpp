@@ -26,6 +26,7 @@ class Carrera {
 		int vacantes;
 		float primero;
 		float ultimo;
+		Carrera();
 		Carrera(string);
 		Carrera(int, int, int, int, int, int, int, int, float, float);
 		~Carrera();

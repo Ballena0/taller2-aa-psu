@@ -4,13 +4,8 @@ MKDIR = mkdir -p
 
 LIBS = -lm
 
-
-
 directorios:
 	$(MKDIR) build dist
-
-funciones.o: directorios src/funciones.cpp include/funciones.hpp
-	$(CXX) $(CXXFLAGS) -c src/funciones.cpp -o build/funciones.o
 
 Estudiante.o: directorios src/Estudiante.cpp include/Estudiante.hpp
 	$(CXX) $(CXXFLAGS) -c src/Estudiante.cpp -o build/Estudiante.o
@@ -20,6 +15,9 @@ Carrera.o: directorios src/Carrera.cpp include/Carrera.hpp
 
 EstudianteCarrera.o: directorios src/EstudianteCarrera.cpp include/EstudianteCarrera.hpp
 	$(CXX) $(CXXFLAGS) -c src/EstudianteCarrera.cpp -o build/EstudianteCarrera.o
+
+funciones.o: directorios src/funciones.cpp include/funciones.hpp
+	$(CXX) $(CXXFLAGS) -c src/funciones.cpp -o build/funciones.o
 
 main.o: directorios main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp -o build/main.o

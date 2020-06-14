@@ -21,6 +21,7 @@ class Estudiante {
 		int lenguaje;
 		int ciencias;
 		int historia;
+		Estudiante();
 		Estudiante(long, int, int, int, int, int, int);
 		Estudiante(string);
 		~Estudiante();

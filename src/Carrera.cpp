@@ -1,6 +1,10 @@
 #include "../include/Carrera.hpp"
 #include "../include/funciones.hpp"
 
+Carrera::Carrera() {
+
+}
+
 Carrera::Carrera(int _codigo, int _nem, int _ranking, int _lenguaje, int _matematica, int _ciencias, int _promedioMinimo, int _vacantes, float _primero, float _ultimo) {
     codigo = _codigo;
     nem = _nem;

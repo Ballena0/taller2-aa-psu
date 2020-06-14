@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         
         if (existeArchivo(rutaPuntajesCsv)) {
           vector<Carrera> carreras = generarCarreras(rutaAdmisionCsv);
-          Carrera::ordenarRecursivo(carreras, 0, carreras.size() - 1);
+          ordenarRecursivo(carreras, 0, carreras.size() - 1);
 
           clasificarEstudiantes(rutaPuntajesCsv, carreras);
         }
@@ -161,10 +161,10 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
       //cout << "Estudiante: " << estudiante.rut << " | Carrera: " << carrera.getCodigo() << " | Ponderado: " << ponderado << endl;
     }
 
-    ordenarRecursivo(carrerasPonderaciones, 0, carrerasPonderaciones.size());
+    /*ordenarRecursivo(carrerasPonderaciones, 0, carrerasPonderaciones.size());
     for (int k = 0; k < carrerasPonderaciones.size(); k++) {
       pair<int, float> carreraPonderacion = carrerasPonderaciones[k];
-      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;}
+      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;}*/
 #pragma omp parallel
   {
 #pragma omp single
