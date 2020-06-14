@@ -32,6 +32,8 @@ class Carrera {
 		~Carrera();
 		bool operator <= (const Carrera&) const;
 		bool operator >= (const Carrera&) const;
+		bool operator < (const Carrera&) const;
+		bool operator > (const Carrera&) const;
 		
 		bool agregarEstudiante(Estudiante);
 		static void ordenarRecursivo(vector<Carrera> &, int, int);

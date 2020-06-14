@@ -8,6 +8,7 @@
 
 #include "include/Carrera.hpp"
 #include "include/Estudiante.hpp"
+#include "include/EstudianteCarrera.hpp"
 #include "include/funciones.hpp"
 
 using namespace std;
@@ -152,19 +153,20 @@ vector<Carrera> clasificarEstudiantes(string rutaCsv, vector<Carrera> carreras)
   int i = 0;
   for (string linea; getline(input, linea) && i < iteraciones; i++) {
     Estudiante estudiante = Estudiante(linea);
-    vector<pair<int, float>> carrerasPonderaciones;
+    vector<EstudianteCarrera> estudiatesCarreras;
     cout << "Para el estudiante " << estudiante.rut << endl;
     for (int j = 0; j < carreras.size(); j++) {
       Carrera carrera = carreras[j];
       float ponderado = carrera.valorPonderado(estudiante);
-      carrerasPonderaciones.push_back(pair<int, float>(carrera.codigo, ponderado));
+      estudiatesCarreras.push_back(EstudianteCarrera(estudiante, carrera, ponderado));
       //cout << "Estudiante: " << estudiante.rut << " | Carrera: " << carrera.getCodigo() << " | Ponderado: " << ponderado << endl;
     }
 
-    /*ordenarRecursivo(carrerasPonderaciones, 0, carrerasPonderaciones.size());
-    for (int k = 0; k < carrerasPonderaciones.size(); k++) {
-      pair<int, float> carreraPonderacion = carrerasPonderaciones[k];
-      cout << carreraPonderacion.first << ": " << carreraPonderacion.second << endl;}*/
+    ordenarRecursivo(estudiatesCarreras, 0, estudiatesCarreras.size());
+    for (int k = 0; k < estudiatesCarreras.size(); k++) {
+      EstudianteCarrera estudianteCarrera = estudiatesCarreras[k];
+      cout << estudianteCarrera.carrera.codigo << ": " << estudianteCarrera.estudiante.rut << endl;
+    }
 #pragma omp parallel
   {
 #pragma omp single

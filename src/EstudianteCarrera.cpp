@@ -11,3 +11,25 @@ EstudianteCarrera::~EstudianteCarrera()
 {
 
 }
+
+bool EstudianteCarrera::operator >= (const EstudianteCarrera &eC) const {
+    if (ponderado == eC.ponderado) {
+        if (carrera.codigo == eC.carrera.codigo) {
+            return true;
+            
+        }
+        return carrera > eC.carrera;
+    }
+    return ponderado > eC.ponderado;
+}
+
+bool EstudianteCarrera::operator <= (const EstudianteCarrera &eC) const {
+    if (ponderado == eC.ponderado) {
+        if (carrera.codigo == eC.carrera.codigo) {
+            return true;
+            
+        }
+        return carrera < eC.carrera;
+    }
+    return ponderado < eC.ponderado;
+}

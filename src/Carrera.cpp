@@ -51,6 +51,32 @@ bool Carrera::agregarEstudiante(Estudiante e) {
     return false;
 }
 
+bool Carrera::operator > (const Carrera &c) const {
+    if (primero == c.primero) {
+        if (vacantes == c.vacantes) {
+            if (ultimo == c.ultimo) {
+                return false;
+            }
+            return ultimo > c.ultimo;
+        }
+        return vacantes > c.vacantes;
+    }
+    return primero > c.primero;
+}
+
+bool Carrera::operator < (const Carrera &c) const {
+    if (primero == c.primero) {
+        if (vacantes == c.vacantes) {
+            if (ultimo == c.ultimo) {
+                return false;
+            }
+            return ultimo < c.ultimo;
+        }
+        return vacantes < c.vacantes;
+    }
+    return primero < c.primero;
+}
+
 bool Carrera::operator >= (const Carrera &c) const {
     if (primero == c.primero) {
         if (vacantes == c.vacantes) {
