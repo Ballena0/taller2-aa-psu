@@ -14,7 +14,8 @@
 using namespace std;
 
 //#define iteraciones 5015751
-#define iteraciones 500000
+#define iteraciones 25000
+
 #define rutaAdmisionCsv "data/admision.csv"
 
 /**
