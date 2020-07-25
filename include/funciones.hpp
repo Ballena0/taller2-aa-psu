@@ -27,6 +27,7 @@ int obtenerIndicePivote(vector<T> &arr, int low, int high) {
 	T pivote = arr[high];
 	int i = (low - 1);
 
+#pragma omp parallel for num_threads(4)
 	for (int j = low; j <= high- 1; j++) {
 		if (arr[j] >= pivote) {
 			i++;
@@ -40,19 +41,18 @@ int obtenerIndicePivote(vector<T> &arr, int low, int high) {
 template <class T>
 void ordenarRecursivo(vector<T> &arr, int low, int high) {
 	if (low < high) { 
+
 		int piv = obtenerIndicePivote(arr, low, high); 
-		
-	#pragma omp parallel
+#pragma omp parallel sections 
 	{
-		#pragma omp task
-		{
-			ordenarRecursivo(arr, low, piv - 1); 
-		
-			ordenarRecursivo(arr, piv + 1, high); 
-		}
+#pragma omp section	
+			ordenarRecursivo(arr, low, piv - 1); 	
+#pragma omp section	
+			ordenarRecursivo(arr, piv + 1, high);
+		}		
+		 
 	}
-		
-	} 
+		 
 }
 
 template <class T>

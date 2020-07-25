@@ -14,7 +14,7 @@
 using namespace std;
 
 //#define iteraciones 5015751
-#define iteraciones 25000
+#define iteraciones 5000
 
 #define rutaAdmisionCsv "data/admision.csv"
 
@@ -29,7 +29,7 @@ void participantes();
 void imprimirCarreras(vector<Carrera>);
 bool existeArchivo(string);
 bool quedanVacantesDisponibles(map<int, Carrera>);
-vector<EstudianteCarrera> clasificarEstudiantes(string, map<int, Carrera>&);
+vector<EstudianteCarrera> clasificarEstudiantes(string, map<int, Carrera> &);
 void escribirCarreras(vector<EstudianteCarrera> listaCarreras, string rutaSalida);
 
 int main(int argc, char **argv)
@@ -54,8 +54,9 @@ int main(int argc, char **argv)
       {
         string rutaPuntajesCsv = argv[2];
         string rutaSalida = argv[3];
-        
-        if (existeArchivo(rutaPuntajesCsv)) {
+
+        if (existeArchivo(rutaPuntajesCsv))
+        {
           map<int, Carrera> carreras = generarCarreras(rutaAdmisionCsv);
           vector<EstudianteCarrera> carrerasLlenas = clasificarEstudiantes(rutaPuntajesCsv, carreras);
           escribirCarreras(carrerasLlenas, rutaSalida);
@@ -63,13 +64,12 @@ int main(int argc, char **argv)
         else
         {
           cout << "No se pudo encontrar el archivo " << rutaPuntajesCsv << ". Por favor corrija la ruta y vuelta a intentarlo." << endl;
-        }        
+        }
       }
       else
       {
         cout << "No se pudo encontrar el archivo " << rutaAdmisionCsv << endl;
       }
-
     }
     else if (opcion == 2)
     {
@@ -118,89 +118,90 @@ bool existeArchivo(string ruta)
   return f.good();
 }
 
-void participantes() {
-  cout << endl << "=== PRUEBA 2 ===" << endl;
+void participantes()
+{
+  cout << endl
+       << "=== PRUEBA 2 ===" << endl;
   cout << "Sebastián Albornoz" << endl;
   cout << "Sebastián Santelices" << endl;
   cout << "Jorge Verdugo" << endl;
 }
 
-void imprimirCarreras(vector<Carrera> carreras) {
-  for (long unsigned int i = 0; i < carreras.size(); i++) {
+void imprimirCarreras(vector<Carrera> carreras)
+{
+  for (long unsigned int i = 0; i < carreras.size(); i++)
+  {
     Carrera carrera = carreras[i];
     cout << carrera.getCodigo() << endl;
   }
 }
 
-vector<EstudianteCarrera> clasificarEstudiantes(string rutaCsv, map<int, Carrera> &carreras) {
+vector<EstudianteCarrera> clasificarEstudiantes(string rutaCsv, map<int, Carrera> &carreras)
+{
   map<long, Estudiante> estudiantesAsignados;
   vector<EstudianteCarrera> estudiantesCarreras;
   vector<EstudianteCarrera> estudiantesSeleccionados;
 
   ifstream input(rutaCsv);
   int i = 0;
-#pragma omp parallel
-{
-#pragma omp single
-    {
-      for(string linea; getline(input, linea) && i< iteraciones; i++){
-#pragma omp task
-      {
-        Estudiante estudiante = Estudiante(linea);
-        for(auto const& c : carreras) {
-          Carrera carrera = c.second;
-          float ponderado = carrera.valorPonderado(estudiante);
-#pragma omp critical
-          estudiantesCarreras.push_back(EstudianteCarrera(estudiante, carrera, ponderado));            
-        }
-      }        
-      }
-    }  
-}
 
-#pragma omp parallel
-{
-#pragma omp task
+  for (string linea; getline(input, linea) && i < iteraciones; i++)
   {
-    ordenarRecursivo(estudiantesCarreras, 0, estudiantesCarreras.size());
+    Estudiante estudiante = Estudiante(linea);
+    for (auto const &c : carreras)
+    {
+
+      Carrera carrera = c.second;
+      float ponderado = carrera.valorPonderado(estudiante);
+      estudiantesCarreras.push_back(EstudianteCarrera(estudiante, carrera, ponderado));
+    }
   }
-}
+
+  ordenarRecursivo(estudiantesCarreras, 0, estudiantesCarreras.size());
+
   long unsigned int j = 0;
-  while (quedanVacantesDisponibles(carreras) && j < estudiantesCarreras.size()) {
+  while (quedanVacantesDisponibles(carreras) && j < estudiantesCarreras.size())
+  {
     EstudianteCarrera estudianteCarrera = estudiantesCarreras[j];
     Estudiante estudiante = estudianteCarrera.estudiante;
     Carrera carrera = estudianteCarrera.carrera;
-    if (estudiantesAsignados.find(estudiante.rut) == estudiantesAsignados.end() ) {
+    if (estudiantesAsignados.find(estudiante.rut) == estudiantesAsignados.end())
+    {
       // Si aún no se asigna el usuario
       bool seAgrego = carreras[carrera.codigo].agregarEstudiante(estudiante);
-      if (seAgrego) {
+      if (seAgrego)
+      {
         cout << "Se asignó al estudiante " << estudiante.rut << " a la carrera " << carrera.codigo << " con " << estudianteCarrera.ponderado << " puntos ponderados" << endl;
         estudiantesAsignados.insert(pair<long, Estudiante>(estudiante.rut, estudiante));
-        //agregar a lista nueva 
+        //agregar a lista nueva
         estudiantesSeleccionados.push_back(estudianteCarrera);
       }
     }
-    
+
     j++;
-    
-  }  
+  }
   return estudiantesSeleccionados;
 }
 
-bool quedanVacantesDisponibles(map<int, Carrera> carreras) {
-  for (auto const& c : carreras) {
+bool quedanVacantesDisponibles(map<int, Carrera> carreras)
+{
+  for (auto const &c : carreras)
+  {
     Carrera carrera = c.second;
-    if (!carrera.estaLlena()) {
+    if (!carrera.estaLlena())
+    {
       return true;
     }
   }
   return false;
 }
 
-void escribirCarreras(vector<EstudianteCarrera> carreras, string rutaSalida) {
-  for(long unsigned int i = 0; i < carreras.size(); i++){
+void escribirCarreras(vector<EstudianteCarrera> carreras, string rutaSalida)
+{
+  for (long unsigned int i = 0; i < carreras.size(); i++)
+  {
     string nombreArchivo = rutaSalida + std::to_string(carreras[i].carrera.codigo) + ".txt";
-    ofstream salida(nombreArchivo ,fstream::app);
+    ofstream salida(nombreArchivo, fstream::app);
     salida << carreras[i].estudiante.rut << ", " << carreras[i].ponderado << endl;
   }
 }
