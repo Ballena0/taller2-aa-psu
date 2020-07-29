@@ -76,25 +76,42 @@ int main(int argc, char **argv)
       // busqueda de rut
 
       int rut;
-      string ruta = argv[3];
-      ifstream archivos(ruta);
+      string ruta;
+      
       try
       {
         rut = atoi(argv[2]);
       }
       catch (invalid_argument const &e)
       {
-        cout << "rut invalido " << argv[2] << endl;
+        cout << "El RUT " << argv[2] << " no es válido " << endl;
       }
 
-      if (archivos)
+      try
       {
-        // codigo
+        ruta = argv[3];
       }
-      else
+      catch (invalid_argument const &e)
       {
-        participantes();
+        cout << "La ruta " << argv[2] << " no es válida" <<endl;
       }
+
+       vector<string> rutasArchivos;
+        map<int, Carrera> carreras = generarCarreras(rutaAdmisionCsv);
+
+        for (auto const& x : carreras)
+        {
+          string rutaCompleta = ruta + "/" + std::to_string(x.second.codigo) + + ".txt";
+          rutasArchivos.push_back(rutaCompleta);
+        }
+
+        pair<int, string> archivo = buscarRut(rutasArchivos, to_string(rut));
+        if (archivo.first <= 0) {
+          cout << "No se encontró el RUT " << rut << " en ninguno de los archivos de la ruta " << ruta << endl;
+        } else {
+        cout << "RUT " << rut << " encontrado en el archivo " << archivo.second << " en la linea " << archivo.first << endl;
+        }
+     
     }
     else
     {

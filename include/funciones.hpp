@@ -18,6 +18,7 @@ bool existeArchivo(string);
 
 vector<string> split(string, char);
 map<int, Carrera> generarCarreras(string);
+pair<int, string> buscarRut(vector<string>, string);
 vector<Carrera> clasificarEstudiantes(string, vector<Carrera>);
 
 

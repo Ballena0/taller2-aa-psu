@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <vector>
 #include "../include/funciones.hpp"  
 
 vector<string> split(string str, char delimitador) {
@@ -28,3 +29,25 @@ map<int, Carrera> generarCarreras(string rutaCsv) {
   return carreras;
 }
 
+pair<int, string> buscarRut(vector<string> rutas, string rut) {
+
+  for (int i = 0; i < rutas.size(); i++)
+  {
+    string ruta = rutas[i];
+    if (existeArchivo(ruta)) {
+      ifstream entrada(ruta);
+      int numeroLinea = 1;
+      for (string linea; getline(entrada, linea);)
+      {
+        if (linea.find(rut) != string::npos) {
+          return pair<int, string>(numeroLinea, ruta);
+        }
+        numeroLinea++;
+      }
+    } else {
+      cout << "No existe el archivo " << ruta << endl;
+    }
+  }
+  
+  
+}
